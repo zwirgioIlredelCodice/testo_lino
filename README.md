@@ -2,26 +2,27 @@
 a tool to convert text to html pages similar to markdown
 
 ## to compile 
-rustc main.rs -o testolino
+`rustc main.rs -o testolino`
 
 ## to run 
-./testolino inputFile outputFile
+`./testolino inputFile outputFile`
 
 ## syntax
-.! 
+`.!`
 # for headers
 
-.#text#. **for bold**
-.$text$. *for italic*
-.*
+`.#text#.` **for bold**
+`.$text$.` *for italic*
+`*`
 * unordered
 * lists
-.0
+
+`.0`
 1. for ordered
 1. lists
 
-.|# header1 |# header2
-.| cell1 | cell2
+`.|# header1 |# header2`
+`.| cell1 | cell2`
 
 First header | Second header
 ------------ | -------------
