@@ -13,7 +13,8 @@ a tool to convert text to html pages similar to markdown
 
 `.#text#.` **for bold**
 `.$text$.` *for italic*
-`*`
+
+`.*`
 * unordered
 * lists
 
