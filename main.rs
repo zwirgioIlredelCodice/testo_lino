@@ -1,6 +1,23 @@
 use std::env;
 use std::fs;
 
+//function to replace all occurency
+fn replace_all(to_replace: &str, replace_with: &str, text: String) -> String {
+	let mut s = text;
+	while s.find(to_replace) != None {
+		s = s.replace(to_replace,replace_with);
+	}
+	s
+}
+
+fn rm_illegal_text(illegal_text: &[str],text: String) -> String {
+	let mut s = text;
+	for index in 0..illegal_text.len() { //per tutti i comandi
+		s = replace_all(index, "", s); 
+	}
+	s
+}
+
 fn main() {
 	let args: Vec<String> = env::args().collect(); //prende i parametri opzionali alla eseguzione del programma e li mette in un vettore
 	let file_name_in = &args[1];
@@ -57,9 +74,7 @@ fn main() {
 		
 		//questo blocco si occupa de comandi al interno della riga 
 		for index in 0..command_to_replace.len() { //per tutti i comandi
-			while line_out.find(command_to_replace[index]) != None { //cambiare tutte le occorenze
-				line_out = line_out.replace(command_to_replace[index],replace_to_command[index]); //cambia 
-			}
+			line_out = replace_all(command_to_replace[index],replace_to_command[index],line_out);
 		}
 		content_out.push_str(&line_out);
 	}
