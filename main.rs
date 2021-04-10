@@ -40,12 +40,37 @@ fn p_inline_c(text: String) -> String {
 	s
 }
 
+//function to parse start line commands
+fn p_startline_c(line: &str) -> String {
+	let mut line_out = String::new();
+	let mut is_not_command = false; //controlla se è un comando
+	
+	for index in 0..C_LINE.len() {
+		if line.starts_with(C_LINE[index]) {
+			line_out.push_str(C_REPLACE_START[index]);
+			line_out.push_str(&line[C_LINE[index].len()..]);
+			line_out.push_str(C_REPLACE_FINISH[index]);
+			is_not_command = false;
+			break; //cosi esce subito appena trova un comando percheè non può esseci più di un comando
+		}
+		else {
+			is_not_command = true;
+		}
+	}
+		
+	//questo blocco si occupa di assegnare un comando paragrafo alle righe senza altri comandi
+	if is_not_command {
+			line_out.push_str("<p>");
+			line_out.push_str(&line);
+			line_out.push_str("\n</p>");
+	}
+	line_out
+}
+
 fn main() {
 	let args: Vec<String> = env::args().collect(); //prende i parametri opzionali alla eseguzione del programma e li mette in un vettore
 	let file_name_in = &args[1];
 	let file_name_out = &args[2];
-	
-	let mut is_not_command: bool = false; //controlla se è un comando
 	
 	println!("leggo dal file {} ", file_name_in);
 	
@@ -58,29 +83,9 @@ fn main() {
 	content_out.push_str(START_HTML); //la roba che serve al inizzio
 	
 	for line_in in lines.iter_mut() {
-		let mut line_out = String::new();
 		
 		//questo blocco si occupa dei comandi a inizio linea
-		for index in 0..C_LINE.len() {
-			if line_in.starts_with(C_LINE[index]) {
-				line_out.push_str(C_REPLACE_START[index]);
-				line_out.push_str(&line_in[C_LINE[index].len()..]);
-				line_out.push_str(C_REPLACE_FINISH[index]);
-				is_not_command = false;
-				break; //cosi esce subito appena trova un comando percheè non può esseci più di un comando
-			}
-			else {
-				is_not_command = true;
-			}
-		}
-		
-		//questo blocco si occupa di assegnare un comando paragrafo alle righe senza altri comandi
-		if is_not_command {
-				line_out.push_str("<p>");
-				line_out.push_str(&line_in);
-				line_out.push_str("\n</p>");
-				is_not_command = false;
-		}
+		let mut line_out = p_startline_c(&line_in);
 		
 		//questo blocco si occupa de comandi al interno della riga 
 		line_out = p_inline_c(line_out);
