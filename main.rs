@@ -67,6 +67,34 @@ fn p_startline_c(line: &str) -> String {
 	line_out
 }
 
+fn testolino_to_html(text: String) -> String {
+	let mut lines: Vec<&str> = text.split('\n').collect(); //fa un vettore content_inete le righe
+	let mut html = String::new();
+	html.push_str(START_HTML); //la roba che serve al inizzio
+	
+	for line_in in lines.iter_mut() {
+		
+		//questo blocco si occupa dei comandi a inizio linea
+		let mut line_out = p_startline_c(&line_in);
+		
+		//questo blocco si occupa de comandi al interno della riga 
+		line_out = p_inline_c(line_out);
+		
+		html.push_str(&line_out);
+	}
+	println!("comandi inizzio linea FATTO :)");
+	println!("comandi interni alla linea FATTO :)");
+	
+	//questo blocco si occupa di togliere i comandi vuoti es </p><p> 
+	html = delate_c_illegal(html);
+	
+	println!("togiere comandi vuoti vietati FATTO :)");
+	
+	html.push_str(END_HTML);
+	
+	html
+}
+
 fn main() {
 	let args: Vec<String> = env::args().collect(); //prende i parametri opzionali alla eseguzione del programma e li mette in un vettore
 	let file_name_in = &args[1];
@@ -77,34 +105,11 @@ fn main() {
 	let content_in = fs::read_to_string(file_name_in) //legge il contenuto del file in una stringa 
 		.expect("Qualcosa è andato storto con la lettura del file :(");
 	
-	let mut lines: Vec<&str> = content_in.split('\n').collect(); //fa un vettore content_inete le righe
-	let mut content_out = String::new(); //dove va tutto il testo cambiato
-	
-	content_out.push_str(START_HTML); //la roba che serve al inizzio
-	
-	for line_in in lines.iter_mut() {
-		
-		//questo blocco si occupa dei comandi a inizio linea
-		let mut line_out = p_startline_c(&line_in);
-		
-		//questo blocco si occupa de comandi al interno della riga 
-		line_out = p_inline_c(line_out);
-		
-		content_out.push_str(&line_out);
-	}
-	println!("comandi inizzio linea FATTO :)");
-	println!("comandi interni alla linea FATTO :)");
-	
-	//questo blocco si occupa di togliere i comandi vuoti es </p><p> 
-	content_out = delate_c_illegal(content_out);
-	
-	println!("togiere comandi vuoti vietati FATTO :)");
-	
-	content_out.push_str(END_HTML);
+	let html = testolino_to_html(content_in);
 	
 	fs::File::create(&file_name_out) //creazion del file 
 		.expect("qualcosa è andato storto con la creazione del file :(");
-	fs::write(file_name_out,&content_out)
+	fs::write(file_name_out,&html)
 			.expect("Qualcosa è andato storto con la scrittura del file :("); // scrive sul file
 	println!("output nel file {}",file_name_out);
 }
