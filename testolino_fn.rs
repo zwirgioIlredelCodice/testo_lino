@@ -7,7 +7,14 @@ const C_REPLACE_WITH: [&'static str; 6] = ["<b>","</b>","<i>","</i>","</th><th>"
 const C_LINE: [&'static str; 5] = [".!",".*",".0",".|#",".|"];
 const C_REPLACE_START: [&'static str; 5]  = ["<h1>","<ul><li>","<ol><li>","<table><tr><th>","<table><tr><td>"]; //elementi *2 elemento *2+1
 const C_REPLACE_FINISH: [&'static str; 5] = ["\n</h1>","\n</li></ul>","\n</li></ol>","\n</th></tr></table>","\n</td></tr></table>"];
-	
+
+
+const C_ARGS:  [&'static str; 2] = [".link",".img"];
+const C_R_ARGS_START: [&'static str; 2] = ["<a ","<img "];
+const C_ARG_START: [&'static str; 2] = ["href=\"","src=\""];
+const C_ARG_FINISH: [&'static str; 2] = ["\">","\" alt=\""];
+const C_R_ARGS_FINISH: [&'static str; 2] = ["</a>","\">"];
+
 const C_ILLEGAL: [&'static str; 4] = ["</p><p>","</ul><ul>","</ol><ol>","</table><table>"];
 	
 fn replace_all(to_replace: &str, replace_with: &str, text: String) -> String {
@@ -46,6 +53,26 @@ fn p_startline_c(line: &str) -> String {
 			line_out.push_str(C_REPLACE_START[index]);
 			line_out.push_str(&line[C_LINE[index].len()..]);
 			line_out.push_str(C_REPLACE_FINISH[index]);
+			is_not_command = false;
+			break; //cosi esce subito appena trova un comando percheè non può esseci più di un comando
+		}
+		else {
+			is_not_command = true;
+		}
+	}
+	
+	for index in 0..C_ARGS.len() {
+		if line.starts_with(C_ARGS[index]) {
+			
+			let mut content = line[C_ARGS[index].len()..].to_string();
+			
+			line_out.push_str(C_R_ARGS_START[index]);
+			
+			content = content.replace("[",C_ARG_START[index]); //sas
+			content = content.replace("]",C_ARG_FINISH[index]); //sas
+			line_out.push_str(&content);
+			
+			line_out.push_str(C_R_ARGS_FINISH[index]);
 			is_not_command = false;
 			break; //cosi esce subito appena trova un comando percheè non può esseci più di un comando
 		}
