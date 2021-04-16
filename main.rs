@@ -1,7 +1,6 @@
 use std::env;
 use std::fs;
-use testolino_fn;
-
+mod testolino_fn;
 
 fn main() {
 	let args: Vec<String> = env::args().collect(); //prende i parametri opzionali alla eseguzione del programma e li mette in un vettore

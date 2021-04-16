@@ -9,7 +9,6 @@ const C_REPLACE_START: [&'static str; 5]  = ["<h1>","<ul><li>","<ol><li>","<tabl
 const C_REPLACE_FINISH: [&'static str; 5] = ["\n</h1>","\n</li></ul>","\n</li></ol>","\n</th></tr></table>","\n</td></tr></table>"];
 	
 const C_ILLEGAL: [&'static str; 4] = ["</p><p>","</ul><ul>","</ol><ol>","</table><table>"];
-
 	
 fn replace_all(to_replace: &str, replace_with: &str, text: String) -> String {
 	let mut s = text;
@@ -64,30 +63,30 @@ fn p_startline_c(line: &str) -> String {
 	line_out
 }
 
-	pub fn testolino_to_html(text: String) -> String {
-		let mut lines: Vec<&str> = text.split('\n').collect(); //fa un vettore content_inete le righe
-		let mut html = String::new();
-		html.push_str(START_HTML); //la roba che serve al inizzio
+pub fn testolino_to_html(text: String) -> String {
+	let mut lines: Vec<&str> = text.split('\n').collect(); //fa un vettore content_inete le righe
+	let mut html = String::new();
+	html.push_str(START_HTML); //la roba che serve al inizzio
 	
-		for line_in in lines.iter_mut() {
+	for line_in in lines.iter_mut() {
 		
-			//questo blocco si occupa dei comandi a inizio linea
-			let mut line_out = p_startline_c(&line_in);
+		//questo blocco si occupa dei comandi a inizio linea
+		let mut line_out = p_startline_c(&line_in);
 		
-			//questo blocco si occupa de comandi al interno della riga 
-			line_out = p_inline_c(line_out);
+		//questo blocco si occupa de comandi al interno della riga 
+		line_out = p_inline_c(line_out);
 		
-			html.push_str(&line_out);
-		}
-		println!("comandi inizzio linea FATTO :)");
-		println!("comandi interni alla linea FATTO :)");
-	
-		//questo blocco si occupa di togliere i comandi vuoti es </p><p> 
-		html = delate_c_illegal(html);
-	
-		println!("togiere comandi vuoti vietati FATTO :)");
-	
-		html.push_str(END_HTML);
-	
-		html
+		html.push_str(&line_out);
 	}
+	println!("comandi inizzio linea FATTO :)");
+	println!("comandi interni alla linea FATTO :)");
+	
+	//questo blocco si occupa di togliere i comandi vuoti es </p><p> 
+	html = delate_c_illegal(html);
+	
+	println!("togiere comandi vuoti vietati FATTO :)");
+	
+	html.push_str(END_HTML);
+	
+	html
+}
