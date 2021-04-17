@@ -18,3 +18,6 @@ gione la tabella
 
 .|# titolo1 |# titolo2
 .| titolo3 | titolo4
+
+.img[fiorellino.jpg] fiorellino
+.link[https://www.google.it/] google
