@@ -1,6 +1,25 @@
-const START_HTML:&'static str = "<!DOCTYPE html>\n<html>\n<head>\n<title>made by testolino</title>\n</head>\n<body>";
+const START_HTML:&'static str = 
+"<html>
+<head>
+<style>
+table, td, th {
+  border: 1px solid black;
+}
+
+table {
+  width: 50%;
+  border-collapse: collapse;
+}
+
+body {
+  font-family: Verdana,sans-serif;
+}
+</style>
+</head>
+<body>
+";
 const END_HTML:&'static str = "</body>\n</html>";
-	
+
 const C_TO_REPLACE: [&'static str; 6] = [".#","#.",".$","$.","|#","|"];
 const C_REPLACE_WITH: [&'static str; 6] = ["<b>","</b>","<i>","</i>","</th><th>","</td><td>"];
 	
@@ -13,7 +32,7 @@ const C_ARGS:  [&'static str; 2] = [".link",".img"];
 const C_R_ARGS_START: [&'static str; 2] = ["<a ","<img "];
 const C_ARG_START: [&'static str; 2] = ["href=\"","src=\""];
 const C_ARG_FINISH: [&'static str; 2] = ["\">","\" alt=\""];
-const C_R_ARGS_FINISH: [&'static str; 2] = ["</a>","\">"];
+const C_R_ARGS_FINISH: [&'static str; 2] = ["</a><br>\n","\"><br>\n"];
 
 const C_ILLEGAL: [&'static str; 4] = ["</p><p>","</ul><ul>","</ol><ol>","</table><table>"];
 	
@@ -60,27 +79,27 @@ fn p_startline_c(line: &str) -> String {
 			is_not_command = true;
 		}
 	}
-	
-	for index in 0..C_ARGS.len() {
-		if line.starts_with(C_ARGS[index]) {
+	if is_not_command {
+		for index in 0..C_ARGS.len() {
+			if line.starts_with(C_ARGS[index]) {
 			
-			let mut content = line[C_ARGS[index].len()..].to_string();
+				let mut content = line[C_ARGS[index].len()..].to_string();
 			
-			line_out.push_str(C_R_ARGS_START[index]);
+				line_out.push_str(C_R_ARGS_START[index]);
 			
-			content = content.replace("[",C_ARG_START[index]); //sas
-			content = content.replace("]",C_ARG_FINISH[index]); //sas
-			line_out.push_str(&content);
+				content = content.replace("[",C_ARG_START[index]); //sas
+				content = content.replace("]",C_ARG_FINISH[index]); //sas
+				line_out.push_str(&content);
 			
-			line_out.push_str(C_R_ARGS_FINISH[index]);
-			is_not_command = false;
-			break; //cosi esce subito appena trova un comando percheè non può esseci più di un comando
-		}
-		else {
-			is_not_command = true;
+				line_out.push_str(C_R_ARGS_FINISH[index]);
+				is_not_command = false;
+				break; //cosi esce subito appena trova un comando percheè non può esseci più di un comando
+			}
+			else {
+				is_not_command = true;
+			}
 		}
 	}
-		
 	//questo blocco si occupa di assegnare un comando paragrafo alle righe senza altri comandi
 	if is_not_command {
 			line_out.push_str("<p>");
