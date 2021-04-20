@@ -11,17 +11,25 @@ table {
   border-collapse: collapse;
 }
 
-body {
-  font-family: Verdana,sans-serif;
+pre code {
+  background-color: #eee;
+  border: 1px solid #999;
+  display: block;
+  padding: 20px;
+  page-break-inside: avoid;
+  max-width: 50%;
+  overflow-x: auto;
+  word-wrap: break-word;
 }
+
 </style>
 </head>
 <body>
 ";
 const END_HTML:&'static str = "</body>\n</html>";
 
-const C_TO_REPLACE: [&'static str; 6] = [".#","#.",".$","$.","|#","|"];
-const C_REPLACE_WITH: [&'static str; 6] = ["<b>","</b>","<i>","</i>","</th><th>","</td><td>"];
+const C_TO_REPLACE: [&'static str; 8] = [".#","#.",".$","$.","|#","|",".code","code."];
+const C_REPLACE_WITH: [&'static str; 8] = ["<b>","</b>","<i>","</i>","</th><th>","</td><td>","<pre><code>","</code></pre>"];
 	
 const C_LINE: [&'static str; 5] = [".!",".*",".0",".|#",".|"];
 const C_REPLACE_START: [&'static str; 5]  = ["<h1>","<ul><li>","<ol><li>","<table><tr><th>","<table><tr><td>"]; //elementi *2 elemento *2+1
