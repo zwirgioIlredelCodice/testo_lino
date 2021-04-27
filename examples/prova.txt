@@ -1,0 +1,30 @@
+.!gione sus lel
+2 riga e .#lello#.
+3 riga e .$vivvi$. e se .#lello#. tu retsso e .#nesso#. adesso e .code code code. 
+asd afassdfsdfs dfs
+
+
+.* ciccio
+.* lello
+
+ciaone e bobob
+
+.0 si o no
+.0 no o si
+i
+.0 e lello 
+
+gione la tabella 
+
+.|# titolo1 |# titolo2
+.| titolo3 | titolo4
+
+.img[fiorellino.jpg] fiorellino
+.link[https://www.google.it/] google
+.codeint gione = lello
+if lui == loro:
+	print("gli altri") dddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+	gione = lello
+if lui == loro:
+	print("gli altri") dddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+code.
